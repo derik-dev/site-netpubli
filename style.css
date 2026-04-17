@@ -81,7 +81,7 @@ img { max-width: 100%; display: block; }
   border-bottom: 1px solid var(--line);
 }
 .header-wrap { display: flex; align-items: center; justify-content: space-between; }
-.logo-img { height: 32px; width: auto; object-fit: contain; }
+.logo-img { height: 40px; width: auto; object-fit: contain; }
 .main-nav { display: flex; gap: 40px; }
 .main-nav a { font-size: 0.9rem; font-weight: 500; color: var(--text-2); }
 .main-nav a:hover { color: var(--pink); }
@@ -174,6 +174,95 @@ img { max-width: 100%; display: block; }
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   background-clip:text;
 }
+
+/* ═══════════════════════════════
+   SPLIT LAYOUT (imagem + conteúdo)
+═══════════════════════════════ */
+.sec-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+/* .reverse: só muda a order via CSS, sem direction hack */
+.sec-split.reverse .sec-split-img  { order: -1; } /* imagem vai pra esquerda */
+.sec-split.reverse .sec-split-content { order:  1; } /* conteúdo fica na direita */
+.sec-split-content { display: flex; flex-direction: column; gap: 0; }
+.sec-split-content .sec-header { margin-bottom: 32px; }
+
+/* Placeholder de imagem */
+.sec-split-img {
+  position: relative;
+  min-height: 400px;
+  border-radius: var(--r-lg);
+  border: 2px dashed var(--line-2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.02);
+}
+.sec-img-placeholder {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute; inset: 0;
+  display: block;
+}
+.sec-img-placeholder[src=""] { display: none; } /* oculta se sem src */
+.sec-img-label {
+  font-size: 0.82rem; color: var(--muted);
+  text-align: center; padding: 20px;
+  pointer-events: none;
+}
+/* Quando a imagem real for inserida, esconde o label */
+.sec-split-img:has(img[src]:not([src=""])) .sec-img-label { display: none; }
+
+/* ═══════════════════════════════
+   ICON GRID (cards compactos)
+═══════════════════════════════ */
+.icon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.icon-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.icon-card:hover {
+  border-color: rgba(255, 0, 51, 0.25);
+  transform: translateY(-3px);
+}
+.icon-card-icon {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,0,51,0.08);
+  border-radius: 10px;
+  color: var(--pink);
+}
+.icon-card strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 2px;
+  letter-spacing: -0.02em;
+}
+.icon-card p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
 
 /* ═══════════════════════════════
    HERO
@@ -419,13 +508,24 @@ img { max-width: 100%; display: block; }
 .sol-card p { font-size:.9rem; color:var(--text-2); line-height:1.65; }
 
 /* ═══════════════════════════════
-   PORTFOLIO (Grid)
+   PORTFOLIO (Horizontal Scroll)
  ═══════════════════════════════ */
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.port-section {
+  padding: 80px 0 0;
+  overflow: hidden;
+}
+/* Área pinada pelo GSAP */
+.port-pin-wrap {
+  overflow: hidden;
+  position: relative;
+}
+/* Faixa horizontal — largura dinâmica */
+.port-track {
+  display: flex;
   gap: 28px;
-  margin-top: 40px;
+  padding: 40px 60px 80px;
+  width: max-content;
+  will-change: transform;
 }
 .port-card {
   position: relative;
@@ -434,6 +534,8 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
   border: 1px solid var(--line);
   transition: .4s var(--ease);
+  width: clamp(340px, 38vw, 560px); /* largura fixa para o scroll horizontal */
+  flex-shrink: 0;
 }
 .port-card:hover { transform: translateY(-8px); border-color: rgba(255,0,51,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
 .port-img {
@@ -480,50 +582,85 @@ img { max-width: 100%; display: block; }
 .faq-item p { font-size: .94rem; color: var(--text-2); line-height: 1.6; }
 
 /* ═══════════════════════════════
-   TESTIMONIALS
+   TESTIMONIALS (infinite marquee)
  ═══════════════════════════════ */
-.testi-card {
-  position:relative; padding:36px 32px;
-  border-radius:var(--r-lg); background:var(--card);
-  border: 1px solid var(--line);
-  display:flex; flex-direction:column; gap:18px;
-  overflow:hidden;
-  transition:transform .3s var(--ease);
+.testi-masonry {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
-.testi-card:hover { transform:translateY(-5px); }
-.testi-quote {
-  font-size:4rem; line-height:.9;
-  font-family:Georgia,serif;
-  color:var(--pink); opacity:.35;
-  margin-bottom:-8px;
+.testi-row {
+  overflow: hidden;
+  width: 100%;
 }
-.testi-card h3 {
-  font-size: 1.1rem; font-weight: 600; line-height: 1.2;
+.testi-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  will-change: transform;
 }
-.testi-card p { font-size:1rem; line-height:1.6; color:#e0e0e0; flex:1; }
-.testi-author {
-  display:flex; align-items:center; gap:12px;
-  padding-top:16px; border-top:1px solid var(--line);
+.testi-track-left  { animation: testi-scroll-left  60s linear infinite; }
+.testi-track-right { animation: testi-scroll-right 60s linear infinite; }
+
+@keyframes testi-scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 7px)); }
 }
-.testi-avatar {
-  width:38px; height:38px; border-radius:50%;
-  background:linear-gradient(135deg,var(--pink),#a0003e);
-  display:flex; align-items:center; justify-content:center;
-  font-size:.88rem; font-weight:600; flex-shrink:0;
+@keyframes testi-scroll-right {
+  from { transform: translateX(calc(-50% - 7px)); }
+  to   { transform: translateX(0); }
 }
-.testi-author strong { display:block; font-size:.85rem; margin-bottom:2px; font-weight: 600; }
-.testi-author span   { font-size:.76rem; color:var(--muted); }
+
+.testi-card-new {
+  flex: 0 0 320px;
+  width: 320px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color .25s var(--ease);
+}
+.testi-card-new:hover { border-color: rgba(255,0,51,0.4); }
+.testi-stars {
+  color: var(--pink);
+  font-size: 1rem;
+  letter-spacing: 3px;
+}
+.testi-card-new h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+}
+.testi-card-new p {
+  font-size: .88rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  font-style: italic;
+}
 
 /* ═══════════════════════════════
    PROCESS (horizontal)
  ═══════════════════════════════ */
 .process-row {
-  display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:0;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 40px minmax(0, 1fr) 40px minmax(0, 1fr);
+  gap:24px;
   align-items:start;
 }
-.proc-step { padding:0 40px; }
-.proc-step:first-child { padding-left:0; }
-.proc-step:last-child  { padding-right:0; }
+.proc-step {
+  width:100%;
+  max-width:220px;
+  min-width:0;
+}
+.proc-step:first-child { justify-self:start; }
+.proc-step:nth-child(3) { justify-self:center; }
+.proc-step:last-child  { justify-self:end; }
 .proc-num {
   display:inline-flex; align-items:center; justify-content:center;
   width:48px; height:48px; border-radius:14px;
@@ -535,12 +672,21 @@ img { max-width: 100%; display: block; }
 .proc-step h3 {
   font-size: 1.1rem; font-weight: 600; line-height: 1.2;
   letter-spacing:-.025em; margin-bottom:12px;
+  max-width:12ch;
 }
-.proc-step p { font-size:.9rem; color:var(--text-2); line-height:1.65; }
+.proc-step p {
+  margin:0;
+  max-width:18ch;
+  font-size:.9rem;
+  color:var(--text-2);
+  line-height:1.65;
+}
 .proc-arrow {
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
   color:rgba(255,30,109,.4);
   padding-top:16px;
-  flex-shrink:0;
 }
 
 /* ═══════════════════════════════
@@ -592,6 +738,162 @@ img { max-width: 100%; display: block; }
 .footer-brand span,.footer-copy { color:var(--muted); font-size:.84rem; }
 
 /* ═══════════════════════════════
+   FAQ (Elite Edition)
+ ═══════════════════════════════ */
+.faq-split {
+  align-items: flex-start;
+  gap: 80px;
+  position: relative;
+}
+
+.faq-cta-col {
+  position: sticky;
+  top: 120px;
+}
+
+.faq-cta-sub {
+  color: var(--text-2);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 16px 0 32px;
+  max-width: 38ch;
+}
+
+.faq-cta-card {
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  margin-bottom: 24px;
+}
+
+.faq-cta-card p {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  margin-bottom: 20px;
+}
+
+.faq-trust {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-trust span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.faq-item {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: all .4s var(--ease);
+}
+
+.faq-item:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.faq-item[open] {
+  border-color: rgba(255, 0, 51, 0.3);
+  background: rgba(255, 0, 51, 0.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.faq-item summary {
+  list-style: none;
+  padding: 24px 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-q-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.faq-number {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--pink);
+  opacity: 0.5;
+  font-family: monospace;
+}
+
+.faq-item[open] .faq-number {
+  opacity: 1;
+}
+
+.faq-question {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.faq-item[open] .faq-question {
+  color: var(--pink);
+}
+
+.faq-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  transition: 0.4s var(--ease);
+}
+
+.faq-item[open] .faq-icon {
+  background: var(--pink);
+  transform: rotate(180deg);
+}
+
+.faq-chevron {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+}
+
+.faq-content {
+  padding: 0 32px 32px 72px; /* Alinhado com a pergunta (pulando o número) */
+}
+
+.faq-content p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.faq-content p strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════
    WHATSAPP FAB
  ═══════════════════════════════ */
 .whatsapp-float {
@@ -617,7 +919,12 @@ img { max-width: 100%; display: block; }
 /* ── 1100px: Tablet Grande ── */
 @media (max-width:1100px) {
   .browser-frame { width:96%; }
-  .process-row { gap:0; }
+  .process-row {
+    grid-template-columns:minmax(0, 1fr) 28px minmax(0, 1fr) 28px minmax(0, 1fr);
+    gap:18px;
+  }
+  .sec-split { gap: 40px; }
+  .faq-split { gap: 40px; }
 }
 
 /* ── 960px: Tablet ── */
@@ -625,6 +932,11 @@ img { max-width: 100%; display: block; }
   /* Header */
   .main-nav { display:none; }
   .header-cta { display: none; }
+
+  /* FAQ Responsive */
+  .faq-cta-col { position: static; margin-bottom: 32px; }
+  .faq-item summary { padding: 20px; font-size: 0.95rem; }
+  .faq-item p { padding: 0 20px 20px; font-size: 0.88rem; }
 
   /* Hero */
   .hero { padding: 110px 0 0; }
@@ -635,6 +947,11 @@ img { max-width: 100%; display: block; }
   .grid-2 { grid-template-columns: 1fr; }
   .portfolio-grid { grid-template-columns: repeat(2,1fr); gap: 20px; }
 
+  /* Split layout → 1 coluna */
+  .sec-split { grid-template-columns: 1fr; gap: 32px; }
+  .sec-split.reverse { direction: ltr; }
+  .sec-split-img { min-height: 280px; }
+
   /* Stats */
   .stats-row { flex-wrap: wrap; border-radius: var(--r-md); padding: 24px 16px; }
   .stat-divider { display: none; }
@@ -644,7 +961,10 @@ img { max-width: 100%; display: block; }
   /* Processo */
   .process-row { grid-template-columns: 1fr; gap: 32px; }
   .proc-arrow { display: none; }
-  .proc-step { padding: 0 !important; }
+  .proc-step {
+    max-width: none;
+    justify-self: stretch !important;
+  }
 
   /* Footer */
   .footer-wrap { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -688,7 +1008,6 @@ img { max-width: 100%; display: block; }
   .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
 
   /* Processo */
-  .proc-step { padding: 0 !important; }
   .proc-num { width: 40px; height: 40px; font-size: 0.75rem; }
 
   /* Depoimentos */
@@ -750,8 +1069,10 @@ img { max-width: 100%; display: block; }
   .faq-grid { gap: 12px; }
 
   /* Depoimentos */
-  .testi-card { padding: 28px 22px; }
-  .testi-quote { font-size: 3rem; }
+  .testi-masonry { margin-top: 32px; gap: 10px; }
+  .testi-card-new { flex: 0 0 260px; width: 260px; padding: 18px; }
+  .testi-track-left,
+  .testi-track-right { animation-duration: 45s; }
 
   /* CTA */
   .cta-section { padding: 60px 0; }

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollAnimations();
   initCounters();
   initFloatLoop();
+  initPortfolioScroll();
 });
 
 /* ============================
@@ -205,6 +206,24 @@ function initScrollAnimations() {
       scrollTrigger: { trigger: ".marquee-strip", start: "top 90%", once: true },
     }
   );
+
+  // FAQ Animation
+  gsap.fromTo(".faq-item",
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
+      stagger: 0.12,
+      scrollTrigger: { trigger: ".faq-list", start: "top 85%", once: true },
+    }
+  );
+
+  gsap.fromTo(".faq-cta-col",
+    { opacity: 0, x: -30 },
+    {
+      opacity: 1, x: 0, duration: 1, ease: "power3.out",
+      scrollTrigger: { trigger: ".faq-cta-col", start: "top 85%", once: true },
+    }
+  );
 }
 
 /* ============================
@@ -242,5 +261,41 @@ function initCounters() {
         });
       },
     });
+  });
+}
+/* ============================
+   PORTFOLIO HORIZONTAL SCROLL
+   ============================ */
+function initPortfolioScroll() {
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+
+  const section  = document.getElementById("portfolio");
+  const pinWrap  = document.getElementById("portPin");
+  const track    = document.getElementById("portTrack");
+  if (!pinWrap || !track || !section) return;
+
+  // No mobile (< 768px): desativa o efeito
+  if (window.innerWidth < 768) {
+    track.style.flexWrap = "wrap";
+    track.style.width = "100%";
+    track.style.padding = "20px 20px 60px";
+    return;
+  }
+
+  // Quantidade a deslizar = largura do track - largura da tela
+  const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
+
+  gsap.to(track, {
+    x: getScrollAmount,
+    ease: "none",
+    scrollTrigger: {
+      trigger: section,    /* pina desde o topo da seção */
+      pin: section,        /* fixa a seção inteira */
+      start: "top top",
+      end: () => `+=${track.scrollWidth - window.innerWidth + 200}`,
+      scrub: 1.2,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
   });
 }
