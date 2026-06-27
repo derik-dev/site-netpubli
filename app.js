@@ -99,8 +99,9 @@ function initHeroAnimation() {
 
   // Set initial states
   gsap.set(Array.from(heroContent.children), { opacity: 0, y: 32 });
-  gsap.set(".browser-frame", { opacity: 0, scale: 0.9, y: 60 });
-  gsap.set(".bf-badge", { opacity: 0, scale: 0.7, y: 20 });
+  gsap.set(".hero-dashboard", { opacity: 0, scale: 0.96, x: 36 });
+  gsap.set(".dashboard-card, .conversion-chart, .dashboard-status > div", { opacity: 0, y: 16 });
+  gsap.set(".chart-bars span", { scaleY: 0, transformOrigin: "bottom" });
 
   const tl = gsap.timeline({ defaults: { ease: "power4.out" }, delay: 0.3 });
 
@@ -110,8 +111,19 @@ function initHeroAnimation() {
     duration: 1.2,
     stagger: 0.15,
   })
-    .to(".browser-frame", { opacity: 1, scale: 1, y: 0, duration: 1.6 }, "-=0.8")
-    .to(".bf-badge",  { opacity: 1, scale: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "back.out(1.7)" }, "-=1");
+    .to(".hero-dashboard", { opacity: 1, scale: 1, x: 0, duration: 1.35 }, "-=1.05")
+    .to(".dashboard-card, .conversion-chart, .dashboard-status > div", {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      stagger: 0.08,
+    }, "-=0.85")
+    .to(".chart-bars span", {
+      scaleY: 1,
+      duration: 0.75,
+      stagger: 0.045,
+      ease: "power3.out",
+    }, "-=0.65");
 }
 
 /* ============================

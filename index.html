@@ -46,7 +46,7 @@
       <div class="hero-glow g3"></div>
       <div class="grid-lines"></div>
 
-      <div class="container">
+      <div class="container hero-layout">
         <div class="hero-center">
 
           <div class="eyebrow" id="heroEyebrow">
@@ -75,41 +75,58 @@
             <a href="#solucao" class="button-ghost magnetic">Ver estrutura</a>
           </div>
 
+          <div class="hero-outcomes" aria-label="Resultados de uma estrutura digital NetPubli">
+            <div class="hero-outcome"><span>01</span><strong>Contatos<br />qualificados</strong></div>
+            <div class="hero-outcome"><span>02</span><strong>Autoridade<br />digital</strong></div>
+            <div class="hero-outcome"><span>03</span><strong>Oportunidades<br />reais de venda</strong></div>
+          </div>
+
+        </div>
+
+        <div class="hero-dashboard" id="heroDashboard" aria-label="Painel ilustrativo da estrutura de conversão NetPubli">
+          <div class="dashboard-head">
+            <div class="dashboard-title"><span class="dashboard-mark"></span>Estrutura de conversão</div>
+            <div class="dashboard-live"><span></span>Sistema online</div>
+          </div>
+
+          <div class="dashboard-body">
+            <div class="dashboard-cards">
+              <article class="dashboard-card">
+                <span class="dashboard-label">Ponto de entrada</span>
+                <strong>Tráfego</strong>
+                <small><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 13V5m0 0 3 3m-3-3L6 2M9 13V8m0 0 3 3M9 8l3-3M15 13V4" /></svg>Anúncio chama atenção</small>
+              </article>
+              <article class="dashboard-card">
+                <span class="dashboard-label">Destino estratégico</span>
+                <strong>Conversão</strong>
+                <small><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 14h12M5 11l3-3 2 2 4-5M12 5h2v2" /></svg>Site fecha o resto</small>
+              </article>
+            </div>
+
+            <div class="conversion-chart">
+              <div class="chart-topline">
+                <div><span class="dashboard-label">Jornada de conversão</span><strong>Presença que trabalha</strong></div>
+                <div class="chart-signal"><i></i><i></i><i></i></div>
+              </div>
+              <div class="chart-bars" aria-hidden="true">
+                <span style="--bar: 22%"></span><span style="--bar: 31%"></span><span style="--bar: 40%"></span>
+                <span style="--bar: 37%"></span><span style="--bar: 52%"></span><span style="--bar: 61%"></span>
+                <span style="--bar: 57%"></span><span style="--bar: 71%"></span><span style="--bar: 80%"></span>
+                <span style="--bar: 76%"></span><span style="--bar: 91%"></span>
+              </div>
+              <div class="chart-axis"><span>Atenção</span><span>Oportunidade</span></div>
+            </div>
+
+            <div class="dashboard-status">
+              <div><span class="status-icon status-done"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m5 9 2.5 2.5L13 6" /></svg></span><strong>Design estratégico</strong><em>Ativo</em></div>
+              <div><span class="status-icon status-progress"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M14 7a5.5 5.5 0 1 0 .2 3M14 4v3h-3" /></svg></span><strong>Captação de leads</strong><em>Integrada</em></div>
+            </div>
+          </div>
+
+          <span class="dashboard-corner corner-a" aria-hidden="true"></span>
+          <span class="dashboard-corner corner-b" aria-hidden="true"></span>
         </div>
       </div>
-
-      <!-- Browser Mockup -->
-      <div class="browser-wrap" id="heroBrowser">
-        <div class="container">
-          <div class="browser-frame">
-
-            <!-- Chrome bar -->
-            <div class="browser-chrome">
-              <div class="bc-dots">
-                <span class="d-r"></span>
-                <span class="d-y"></span>
-                <span class="d-g"></span>
-              </div>
-              <div class="bc-url">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1" opacity="0.35"/>
-                  <path d="M2 5h6M5 2v6" stroke="currentColor" stroke-width="1" opacity="0.35"/>
-                </svg>
-                netpubli.com.br
-              </div>
-              <div class="bc-badge">
-                <span class="badge-dot"></span>Alta Conversão
-              </div>
-            </div>
-
-            <!-- Fake landing page inside -->
-            <div class="browser-screen">
-               <!-- Imagem removida conforme solicitado -->
-            </div>
-
-          </div><!-- /browser-frame -->
-        </div>
-      </div><!-- /browser-wrap -->
     </section>
 
     <!-- WRAPPER BG 2 (Marquee + Stats) -->
@@ -644,8 +661,8 @@
           <div class="delivery-grid blueprint-reveal">
             <article class="delivery-card">
               <span class="card-index">01</span>
-              <div class="delivery-visual visual-positioning" aria-hidden="true">
-                <span class="mini-nav"></span><span class="mini-title"></span><span class="mini-copy"></span><span class="mini-button"></span>
+              <div class="delivery-visual visual-positioning">
+                <img class="delivery-art" src="imagens/beneficio-posicionamento.png" alt="" loading="lazy" />
               </div>
               <div class="delivery-copy">
                 <span class="delivery-kicker">Posicionamento</span>
@@ -657,10 +674,8 @@
             <article class="delivery-card delivery-featured">
               <span class="card-index">02</span>
               <span class="popular-label">Essencial para anúncios</span>
-              <div class="delivery-visual visual-conversion" aria-hidden="true">
-                <span class="conversion-line line-a"></span><span class="conversion-dot dot-a"></span>
-                <span class="conversion-line line-b"></span><span class="conversion-dot dot-b"></span>
-                <span class="conversion-goal">+</span>
+              <div class="delivery-visual visual-conversion">
+                <img class="delivery-art" src="imagens/beneficio-conversao.png" alt="" loading="lazy" />
               </div>
               <div class="delivery-copy">
                 <span class="delivery-kicker">Conversão</span>
@@ -671,8 +686,8 @@
 
             <article class="delivery-card">
               <span class="card-index">03</span>
-              <div class="delivery-visual visual-performance" aria-hidden="true">
-                <span class="speed-ring"><strong>95</strong></span><span class="speed-bar"></span><span class="speed-bar short"></span>
+              <div class="delivery-visual visual-performance">
+                <img class="delivery-art" src="imagens/beneficio-performance.png" alt="" loading="lazy" />
               </div>
               <div class="delivery-copy">
                 <span class="delivery-kicker">Performance</span>
