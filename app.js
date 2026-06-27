@@ -136,7 +136,7 @@ function initFloatLoop() {
 function initScrollAnimations() {
   if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
     // Fallback: just show everything
-    document.querySelectorAll(".section-header, .pain-card, .solution-card, .testimonial-card, .process-step, .final-cta-wrap").forEach((el) => {
+    document.querySelectorAll(".section-header, .pain-card, .solution-card, .testimonial-card, .process-step, .final-cta-wrap, .blueprint-reveal > *").forEach((el) => {
       el.style.opacity = "1";
     });
     return;
@@ -224,6 +224,25 @@ function initScrollAnimations() {
       scrollTrigger: { trigger: ".faq-cta-col", start: "top 85%", once: true },
     }
   );
+
+  // Conversion blueprint cards
+  gsap.utils.toArray(".blueprint-reveal").forEach((group) => {
+    const items = Array.from(group.children);
+    if (!items.length) return;
+
+    gsap.fromTo(items,
+      { opacity: 0, y: 38, scale: 0.985 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.09,
+        ease: "power3.out",
+        scrollTrigger: { trigger: group, start: "top 84%", once: true },
+      }
+    );
+  });
 }
 
 /* ============================
