@@ -200,6 +200,36 @@
 .delivery-copy h3 { font-size:1.34rem; line-height:1.25; letter-spacing:-.035em; margin-bottom:13px; }
 .delivery-copy p { color:var(--text-2); font-size:.91rem; line-height:1.7; }
 
+/* Tema claro — benefícios */
+#beneficios {
+  background: #fff;
+  color: #151515;
+  border-top-color: #ededed;
+  border-bottom: 1px solid #ededed;
+}
+#beneficios .eyebrow {
+  background: rgba(255, 0, 51, 0.06);
+  border-color: rgba(255, 0, 51, 0.16);
+  color: #9f0020;
+}
+#beneficios .blueprint-heading h2 { color: #151515; }
+#beneficios .blueprint-heading > p { color: #666; }
+#beneficios .delivery-card {
+  background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+  border-color: #dedede;
+  box-shadow: 0 14px 38px rgba(20, 20, 20, 0.05);
+}
+#beneficios .delivery-card:hover {
+  border-color: rgba(255, 0, 51, 0.35);
+  box-shadow: 0 22px 52px rgba(20, 20, 20, 0.1);
+}
+#beneficios .delivery-featured {
+  background: linear-gradient(180deg, #fff5f7 0%, #fff 48%, #fafafa 100%);
+  border-color: rgba(255, 0, 51, 0.35);
+}
+#beneficios .delivery-copy h3 { color: #151515; }
+#beneficios .delivery-copy p { color: #656565; }
+
 /* Para quem é */
 .audience-section { background: radial-gradient(circle at 20% 50%, rgba(255,0,51,.08), transparent 34%); }
 .audience-layout { display:grid; grid-template-columns:.82fr 1.18fr; gap:82px; align-items:center; }
